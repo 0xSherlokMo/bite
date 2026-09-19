@@ -1,14 +1,14 @@
-// Command gofer automates delivery apps over their private mobile APIs.
+// Command bite automates delivery apps over their private mobile APIs.
 //
 // Usage:
 //
-//	gofer talabat session import <headers.json>
-//	gofer talabat profile
-//	gofer talabat addresses
-//	gofer talabat food restaurants --lat <f> --lon <f>
-//	gofer talabat food menu <branchId>
-//	gofer talabat mart cart --vendor <uuid> --branch <id> --chain <id> --lat <f> --lon <f>
-//	gofer talabat mart add  --vendor <uuid> --branch <id> --chain <id> --product <uuid> --qty <n> --lat <f> --lon <f>
+//	bite talabat session import <headers.json>
+//	bite talabat profile
+//	bite talabat addresses
+//	bite talabat food restaurants --lat <f> --lon <f>
+//	bite talabat food menu <branchId>
+//	bite talabat mart cart --vendor <uuid> --branch <id> --chain <id> --lat <f> --lon <f>
+//	bite talabat mart add  --vendor <uuid> --branch <id> --chain <id> --product <uuid> --qty <n> --lat <f> --lon <f>
 package main
 
 import (
@@ -18,7 +18,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/salah/gofer/internal/providers/talabat"
+	"github.com/salah/bite/internal/providers/talabat"
 )
 
 func main() {
@@ -37,15 +37,15 @@ func main() {
 }
 
 func usage() {
-	fmt.Fprint(os.Stderr, `gofer — automate delivery apps
+	fmt.Fprint(os.Stderr, `bite — automate delivery apps
 
-  gofer talabat session import <headers.json>
-  gofer talabat profile
-  gofer talabat addresses
-  gofer talabat food restaurants --lat <f> --lon <f>
-  gofer talabat food menu <branchId>
-  gofer talabat mart cart --vendor <uuid> --branch <id> --chain <id> --lat <f> --lon <f>
-  gofer talabat mart add  --vendor <uuid> --branch <id> --chain <id> --product <uuid> [--qty 1] --lat <f> --lon <f>
+  bite talabat session import <headers.json>
+  bite talabat profile
+  bite talabat addresses
+  bite talabat food restaurants --lat <f> --lon <f>
+  bite talabat food menu <branchId>
+  bite talabat mart cart --vendor <uuid> --branch <id> --chain <id> --lat <f> --lon <f>
+  bite talabat mart add  --vendor <uuid> --branch <id> --chain <id> --product <uuid> [--qty 1] --lat <f> --lon <f>
 `)
 	os.Exit(2)
 }
@@ -59,7 +59,7 @@ func runTalabat(args []string) {
 	// session import needs no client.
 	if args[0] == "session" {
 		if len(args) < 3 || args[1] != "import" {
-			die("usage: gofer talabat session import <headers.json>")
+			die("usage: bite talabat session import <headers.json>")
 		}
 		loc, err := talabat.ImportHeaders(args[2])
 		check(err)
@@ -94,14 +94,14 @@ func runTalabat(args []string) {
 
 func runFood(ctx context.Context, c *talabat.Client, args []string) {
 	if len(args) == 0 {
-		die("usage: gofer talabat food [restaurants|menu]")
+		die("usage: bite talabat food [restaurants|menu]")
 	}
 	switch args[0] {
 	case "restaurants":
 		fs := flag.NewFlagSet("restaurants", flag.ExitOnError)
 		lat := fs.Float64("lat", 0, "latitude")
 		lon := fs.Float64("lon", 0, "longitude")
-		area := fs.Int("area", 0, "area id (from `gofer talabat addresses`)")
+		area := fs.Int("area", 0, "area id (from `bite talabat addresses`)")
 		page := fs.Int("page", 1, "page (starts at 1)")
 		_ = fs.Parse(args[1:])
 		rs, err := c.Restaurants(ctx, *lat, *lon, *area, *page)
@@ -114,7 +114,7 @@ func runFood(ctx context.Context, c *talabat.Client, args []string) {
 
 	case "menu":
 		if len(args) < 2 {
-			die("usage: gofer talabat food menu <branchId>")
+			die("usage: bite talabat food menu <branchId>")
 		}
 		var branch int
 		if _, err := fmt.Sscanf(args[1], "%d", &branch); err != nil {
@@ -131,7 +131,7 @@ func runFood(ctx context.Context, c *talabat.Client, args []string) {
 
 func runMart(ctx context.Context, c *talabat.Client, args []string) {
 	if len(args) == 0 {
-		die("usage: gofer talabat mart [cart|add]")
+		die("usage: bite talabat mart [cart|add]")
 	}
 	fs := flag.NewFlagSet("mart", flag.ExitOnError)
 	vendor := fs.String("vendor", "", "dh_vendor_id (uuid)")
@@ -184,7 +184,7 @@ func check(err error) {
 		return
 	}
 	if ae, ok := err.(*talabat.APIError); ok && ae.Expired() {
-		fmt.Fprintln(os.Stderr, "error: session expired — re-import a fresh capture with `gofer talabat session import <file>`")
+		fmt.Fprintln(os.Stderr, "error: session expired — re-import a fresh capture with `bite talabat session import <file>`")
 		os.Exit(1)
 	}
 	fmt.Fprintln(os.Stderr, "error:", err)

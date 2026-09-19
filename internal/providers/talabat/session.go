@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/salah/gofer/internal/secrets"
+	"github.com/salah/bite/internal/secrets"
 )
 
 // requiredHeaders must be present for a session to authenticate.

@@ -16,7 +16,7 @@ from the app. When calls start returning 401, re-mint a session:
    `userlocation.talabat.com` requests to a JSON object `{header: value}`.
 5. Import it:
    ```
-   gofer talabat session import session_full.json
+   bite talabat session import session_full.json
    ```
 
 The header set must include at minimum `authorization` and `x-device-id`, and for

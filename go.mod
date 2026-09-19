@@ -1,3 +1,3 @@
-module github.com/salah/gofer
+module github.com/salah/bite
 
 go 1.25

@@ -1,6 +1,6 @@
 // Package secrets stores per-provider session tokens outside the repository.
 //
-// Sessions are written to $XDG_CONFIG_HOME/gofer (default ~/.config/gofer) with
+// Sessions are written to $XDG_CONFIG_HOME/bite (default ~/.config/bite) with
 // 0600 permissions so credentials never live in source control or world-readable
 // locations. Only the raw HTTP header set needed to authenticate is persisted.
 package secrets
@@ -19,7 +19,7 @@ type Session struct {
 	Headers  map[string]string `json:"headers"`
 }
 
-// dir returns the gofer config directory, creating it with 0700 if needed.
+// dir returns the bite config directory, creating it with 0700 if needed.
 func dir() (string, error) {
 	base := os.Getenv("XDG_CONFIG_HOME")
 	if base == "" {
@@ -29,7 +29,7 @@ func dir() (string, error) {
 		}
 		base = filepath.Join(home, ".config")
 	}
-	d := filepath.Join(base, "gofer")
+	d := filepath.Join(base, "bite")
 	if err := os.MkdirAll(d, 0o700); err != nil {
 		return "", err
 	}
@@ -53,7 +53,7 @@ func Load(provider string) (*Session, error) {
 	b, err := os.ReadFile(p)
 	if err != nil {
 		if os.IsNotExist(err) {
-			return nil, fmt.Errorf("no session for %q: run `gofer %s session import <file>` first", provider, provider)
+			return nil, fmt.Errorf("no session for %q: run `bite %s session import <file>` first", provider, provider)
 		}
 		return nil, err
 	}

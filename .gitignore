@@ -8,5 +8,5 @@ config.local.*
 
 # Build artifacts
 /bin/
-/gofer
+/bite
 *.test
