@@ -1,0 +1,12 @@
+# Never commit secrets / session tokens
+/secrets/
+*.session.json
+*.flows
+config.local.*
+.env
+.DS_Store
+
+# Build artifacts
+/bin/
+/gofer
+*.test
