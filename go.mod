@@ -1,3 +1,3 @@
-module github.com/salah/bite
+module github.com/0xSherlokMo/bite
 
 go 1.25

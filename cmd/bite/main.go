@@ -18,7 +18,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/salah/bite/internal/providers/talabat"
+	"github.com/0xSherlokMo/bite/internal/providers/talabat"
 )
 
 func main() {

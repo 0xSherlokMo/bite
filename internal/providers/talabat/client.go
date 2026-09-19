@@ -16,7 +16,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/salah/bite/internal/secrets"
+	"github.com/0xSherlokMo/bite/internal/secrets"
 )
 
 const (
