@@ -6,7 +6,7 @@ Delivery apps here have no public API and no real web checkout — but their pho
 apps just talk JSON. `bite` talks that JSON directly. Started as a "I'm too lazy to
 open Talabat" side project; ended up being kind of useful, so here it is.
 
-Written in Go. Talabat works today. Breadfast and Rabbit are on the list.
+Written in Go. **Talabat** and **Rabbit** work today. **Breadfast** is shielded by a commercial anti-tamper SDK (RASP) — see notes below.
 
 ## What it does
 
@@ -20,6 +20,23 @@ bite talabat mart add --vendor <uuid> --branch <id> --chain <id> --product <uuid
 
 Reads and cart edits work. Actually placing an order (i.e. spending money) isn't
 automated yet — on purpose. That'll be a separate, confirm-first command.
+
+## Providers
+
+| Provider | Account | Food | Grocery | Notes |
+|----------|:-------:|:----:|:-------:|-------|
+| **Talabat** | ✅ | ✅ restaurants + menu | ✅ talabat mart | open API |
+| **Rabbit**  | ✅ | ✅ restaurants | ✅ Supermarket+ | open API, no anti-fraud |
+| **Breadfast** | — | — | — | blocked: hardened with a native anti-tamper SDK that self-destructs on rooted/emulated devices |
+
+```bash
+# Rabbit
+bite rabbit profile
+bite rabbit store                       # which store serves you + hours
+bite rabbit categories --store-id 27 --store-name EGY010SOD
+bite rabbit food restaurants --lat 30.04 --lon 30.98 --store-name EGY010SOD
+bite rabbit cart add --product <id> --store-id 27 --lat 30.04 --lon 30.98
+```
 
 ## Setup
 
@@ -44,7 +61,8 @@ loaded at runtime. The repo only ships example files with `<placeholders>`.
 - [ ] Place orders (with a confirm gate)
 - [ ] Search
 - [ ] Auto token refresh
-- [ ] Breadfast + Rabbit
+- [x] Rabbit
+- [ ] Breadfast (needs anti-tamper bypass on a real device)
 
 ## Heads up
 
